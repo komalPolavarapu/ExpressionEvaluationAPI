@@ -26,18 +26,11 @@ namespace ExpressionEvaluation.Controllers
             HttpResponseMessage responseMessage = new HttpResponseMessage();
 
             try
-            {
-                
+            {                
                 string cleanedInput = _evaluator.RemoveWhiteSpaces(input);
                 string validationMessage = _evaluator.ValidateExpression(cleanedInput);
                 if (!string.IsNullOrWhiteSpace(validationMessage))
-                {
-                    //var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    //{
-                    //    Content = new StringContent(validationMessage),
-                    //    ReasonPhrase = validationMessage
-                    //};
-                    
+                {                                
                     return BadRequest(validationMessage) ;
                 }
 
@@ -50,12 +43,7 @@ namespace ExpressionEvaluation.Controllers
                 multiplicationHandler.SetNext(divisionHandler).SetNext(additionHandler).SetNext(subtractionHandler).SetNext(otherHandler);
 
                 string result = _evaluator.HandleInput(multiplicationHandler, input);
-
-                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(result), System.Text.Encoding.UTF8, "application/json");
-                return Ok(Convert.ToDouble(result));
-                //responseMessage.Content = new ObjectContent<double>(Convert.ToDouble(result),System.Net.Http.Formatting.MediaTypeFormatter.MaxHttpCollectionKeys , "application/json");
-                //return new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(result,System.Text.Encoding.UTF8,"application/json" )};
-                
+                return Ok(Convert.ToDouble(result));               
             }
             catch(Exception ex)
             {

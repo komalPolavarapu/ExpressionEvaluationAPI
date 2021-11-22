@@ -25,8 +25,41 @@ namespace ExpressionEvaluationTest
         [InlineData("4+5*2", 14)]
         [InlineData("4+5/2", 6.5)]
         [InlineData("4+5/2-1", 5.5)]
-        [InlineData("5+6/2-1-3*2", 1)]
+        [InlineData("15+16/2-1-3*2", 16)]
         public void EvaluateValidExpressionWithoutWhiteSpaces(string input,double expectedResult)
+        {
+            var response = _evaluationController.Evaluate(input);
+            var okObjectresult = response as OkObjectResult;
+            double actualresult = Convert.ToDouble(okObjectresult.Value);
+            Assert.Equal(expectedResult, actualresult);
+        }
+
+        [Theory]
+        [InlineData("4*2*2", 16)]
+        [InlineData("25*5*2", 250)]        
+        public void EvaluateValidExpressionWithOnlyMultiplicationOperator(string input, double expectedResult)
+        {
+            var response = _evaluationController.Evaluate(input);
+            var okObjectresult = response as OkObjectResult;
+            double actualresult = Convert.ToDouble(okObjectresult.Value);
+            Assert.Equal(expectedResult, actualresult);
+        }
+
+        [Theory]
+        [InlineData("5+7+8", 20)]
+        [InlineData("35+25+200", 260)]
+        public void EvaluateValidExpressionWithOnlyAdditionOperator(string input, double expectedResult)
+        {
+            var response = _evaluationController.Evaluate(input);
+            var okObjectresult = response as OkObjectResult;
+            double actualresult = Convert.ToDouble(okObjectresult.Value);
+            Assert.Equal(expectedResult, actualresult);
+        }
+
+        [Theory]
+        [InlineData("16/2/2", 4)]
+        [InlineData("100/2/2", 25)]
+        public void EvaluateValidExpressionWithOnlyDivisionOperator(string input, double expectedResult)
         {
             var response = _evaluationController.Evaluate(input);
             var okObjectresult = response as OkObjectResult;
